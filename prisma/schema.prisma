@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // provider = "postgresql"
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Exam {
+  id        Int        @id @default(autoincrement())
+  title     String
+  duration  Float
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Questions Question[]
+  Student   Student[]
+}
+
+model Question {
+  id            Int             @id @default(autoincrement())
+  title         String?
+  audioUrl      String?
+  exam          Exam            @relation(fields: [examId], references: [id])
+  examId        Int
+  answers       Answer[]
+  StudentAnswer StudentAnswer[]
+}
+
+model Answer {
+  id         Int      @id @default(autoincrement())
+  answerText String
+  isCorrect  Boolean  @default(false)
+  Question   Question @relation(fields: [questionId], references: [id])
+  questionId Int
+}
+
+model Student {
+  id                                         Int             @id @default(autoincrement())
+  name                                       String
+  email                                      String
+  phone                                      String
+  languages                                  String?
+  why_do_you_learn_German                    String?
+  which_textbook_have_you_worked_with_so_far String?
+  StudentAnswer                              StudentAnswer[]
+  createdAt                                  DateTime        @default(now())
+  updatedAt                                  DateTime        @updatedAt
+  Exam                                       Exam            @relation(fields: [examId], references: [id])
+  examId                                     Int
+}
+
+model StudentAnswer {
+  id              Int      @id @default(autoincrement())
+  correctAnswerId Int
+  Student         Student  @relation(fields: [studentId], references: [id])
+  studentId       Int
+  Question        Question @relation(fields: [questionId], references: [id])
+  questionId      Int
+}
+
+model Faq {
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

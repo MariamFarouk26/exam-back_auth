@@ -1,0 +1,33 @@
+version: '3.5'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    container_name: exam_db
+    volumes:
+      - exam-db:/var/lib/postgresql/data/
+    ports:
+      - '${DB_PORT}:5432'
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: exam_backend
+    restart: always
+    environment:
+      - PORT=${APP_PORT}
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    depends_on:
+      - db
+    volumes:
+      - exam-backend:/src:/app/src
+volumes:
+  exam-db:
+  exam-backend:
