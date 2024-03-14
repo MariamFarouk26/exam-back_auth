@@ -15,7 +15,7 @@ export class ExamsService {
       data: {
         duration: createExamDto.duration,
         title: createExamDto.title,
-        Questions: {
+        questions: {
           create: createExamDto.questions.map(question => ({
             title: question.title,
             audioUrl: question.audioUrl,
@@ -40,7 +40,7 @@ export class ExamsService {
           id: true,
           duration: true,
           title: true,
-          Questions: {
+          questions: {
             select: {
               id: true,
               title: true,
@@ -66,7 +66,7 @@ export class ExamsService {
         id: true,
         duration: true,
         title: true,
-        Questions: {
+        questions: {
           select: {
             id: true,
             title: true,
@@ -86,10 +86,32 @@ export class ExamsService {
   }
 
   update(id: number, updateExamDto: UpdateExamDto) {
-    return this.prisma.exam.update({
-      where: { id },
-      data: updateExamDto
-    })
+    // return this.prisma.exam.update({
+    //   where: { id },
+    //   data: {
+    //     duration: updateExamDto.duration,
+    //     title: updateExamDto.title,
+    //     questions: {
+    //       update: updateExamDto.questions.map(question => ({
+    //         where: { id: question.id },
+    //         data: {
+    //           title: question.title,
+    //           audioUrl: question.audioUrl,
+    //           answers: {
+    //             update: question.answers.map(answer => ({
+    //               where: { id: answer.id },
+    //               data: {
+    //                 answerText: answer.answerText,
+    //                 isCorrect: answer.isCorrect
+    //               }
+    //             }))
+    //           }
+    //         }
+    //       }))
+    //     }
+    //   }
+    // })
+    return 'this method is not implemented'
   }
 
   remove(id: number) {

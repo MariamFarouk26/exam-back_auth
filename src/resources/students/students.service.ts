@@ -14,7 +14,7 @@ interface Question {
 }
 
 interface Exam {
-  Questions: Question[];
+  questions: Question[];
 }
 
 interface StudentAnswer {
@@ -42,7 +42,7 @@ export class StudentsService {
     let wrongAnswers = 0;
 
     studentAnswers.forEach((studentAnswer) => {
-      const question = exam.Questions.find(q => q.id === studentAnswer.questionId);
+      const question = exam.questions.find(q => q.id === studentAnswer.questionId);
       if (question) {
         totalQuestions++;
         const correctAnswerId = question.answers[0].id;
@@ -64,16 +64,16 @@ export class StudentsService {
       },
       select: {
 
-        StudentAnswer: {
+        studentAnswer: {
           select: {
 
             questionId: true,
             correctAnswerId: true,
           }
         },
-        Exam: {
+        exam: {
           select: {
-            Questions: {
+            questions: {
 
               select: {
                 id: true,
@@ -94,10 +94,10 @@ export class StudentsService {
     })
 
     return {
-      "totalQuestions": this.calculateExamResult(result.StudentAnswer, result.Exam).totalQuestions,
-      "correctAnswers": this.calculateExamResult(result.StudentAnswer, result.Exam).correctAnswers,
-      "wrongAnswers": this.calculateExamResult(result.StudentAnswer, result.Exam).wrongAnswers,
-      "percentage": this.calculateExamResult(result.StudentAnswer, result.Exam).percentage
+      "totalQuestions": this.calculateExamResult(result.studentAnswer, result.exam).totalQuestions,
+      "correctAnswers": this.calculateExamResult(result.studentAnswer, result.exam).correctAnswers,
+      "wrongAnswers": this.calculateExamResult(result.studentAnswer, result.exam).wrongAnswers,
+      "percentage": this.calculateExamResult(result.studentAnswer, result.exam).percentage
     }
 
   }
@@ -110,16 +110,16 @@ export class StudentsService {
         languages: createStudentDto.languages,
         why_do_you_learn_German: createStudentDto.why_do_you_learn_German,
         which_textbook_have_you_worked_with_so_far: createStudentDto.which_textbook_have_you_worked_with_so_far,
-        Exam: {
+        exam: {
           connect: {
             id: createStudentDto.examId
 
           }
         },
-        StudentAnswer: {
+        studentAnswer: {
           create: createStudentDto.answers.map(answer => ({
             correctAnswerId: answer.correctAnswerId,
-            Question: {
+            question: {
               connect: {
                 id: answer.questionId
               }
@@ -139,10 +139,10 @@ export class StudentsService {
   findAll() {
     return this.prisma.student.findMany({
       include: {
-        StudentAnswer: {
+        studentAnswer: {
           select: {
             correctAnswerId: true,
-            Question: {
+            question: {
               select: {
                 title: true,
                 audioUrl: true,
@@ -166,10 +166,10 @@ export class StudentsService {
   findOne(id: number) {
     return this.prisma.student.findUnique({
       where: { id }, include: {
-        StudentAnswer: {
+        studentAnswer: {
           select: {
             correctAnswerId: true,
-            Question: {
+            question: {
               select: {
                 title: true,
                 audioUrl: true,

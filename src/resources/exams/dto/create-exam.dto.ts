@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger"
 
 class Answer {
+    id?: number;
     @ApiProperty()
     answerText: string
     @ApiProperty()
@@ -8,7 +9,7 @@ class Answer {
 }
 
 class Question {
-
+    id?: number;
     @ApiProperty()
     title?: string
     @ApiProperty()

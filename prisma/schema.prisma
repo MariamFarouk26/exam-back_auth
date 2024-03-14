@@ -20,8 +20,8 @@ model Exam {
   duration  Float
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  Questions Question[]
-  Student   Student[]
+  questions Question[]
+  student   Student[]
 }
 
 model Question {
@@ -31,14 +31,14 @@ model Question {
   exam          Exam            @relation(fields: [examId], references: [id])
   examId        Int
   answers       Answer[]
-  StudentAnswer StudentAnswer[]
+  studentAnswer StudentAnswer[]
 }
 
 model Answer {
   id         Int      @id @default(autoincrement())
   answerText String
   isCorrect  Boolean  @default(false)
-  Question   Question @relation(fields: [questionId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id])
   questionId Int
 }
 
@@ -50,19 +50,19 @@ model Student {
   languages                                  String?
   why_do_you_learn_German                    String?
   which_textbook_have_you_worked_with_so_far String?
-  StudentAnswer                              StudentAnswer[]
+  studentAnswer                              StudentAnswer[]
   createdAt                                  DateTime        @default(now())
   updatedAt                                  DateTime        @updatedAt
-  Exam                                       Exam            @relation(fields: [examId], references: [id])
+  exam                                       Exam            @relation(fields: [examId], references: [id])
   examId                                     Int
 }
 
 model StudentAnswer {
   id              Int      @id @default(autoincrement())
   correctAnswerId Int
-  Student         Student  @relation(fields: [studentId], references: [id])
+  student         Student  @relation(fields: [studentId], references: [id])
   studentId       Int
-  Question        Question @relation(fields: [questionId], references: [id])
+  question        Question @relation(fields: [questionId], references: [id])
   questionId      Int
 }
 
