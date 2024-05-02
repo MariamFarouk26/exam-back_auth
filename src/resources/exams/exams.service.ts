@@ -114,8 +114,9 @@ export class ExamsService {
     return 'this method is not implemented'
   }
 
-  remove(id: number) {
-
-    return this.prisma.exam.delete({ where: { id } })
+  async remove(id: number) {
+    // return this.prisma.exam.delete({ where: { id } })
+    let deletedProduct =  await this.prisma.exam.delete({ where: { id } });
+    return {message : "deleted Successfully",data : deletedProduct}
   }
 }
