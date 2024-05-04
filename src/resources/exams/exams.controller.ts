@@ -2,10 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { ExamsService } from './exams.service';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { UpdateExamDto } from './dto/update-exam.dto';
-import { UserRole } from '@prisma/client';
 import { jwtAuthGuard } from '../auth/jwt.gaurd';
-import { RolesGuard } from '../auth/jwt.permission';
-import { Roles } from '../auth/decorator/role.decrator';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 
@@ -15,8 +12,7 @@ export class ExamsController {
   constructor(private readonly examsService: ExamsService) { }
 
   
-  @UseGuards(jwtAuthGuard,RolesGuard)
-  @Roles(UserRole.ADMIN)
+  @UseGuards(jwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({description:"a new exam is added"})
   @Post()
@@ -25,19 +21,14 @@ export class ExamsController {
   }
 
 
-  @UseGuards(jwtAuthGuard,RolesGuard)
-  @Roles(UserRole.USER)
   @ApiOkResponse({description:"get all exam ",isArray: true})
-  @ApiBearerAuth()
   @Get()
   findAll() {
     return this.examsService.findAll();
   }
 
-  
-  @UseGuards(jwtAuthGuard,RolesGuard)
-  @Roles(UserRole.USER)
-  @ApiBearerAuth()
+ 
+
   @ApiOkResponse({description:"get spacific exam by id "})
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -45,8 +36,7 @@ export class ExamsController {
   }
 
   
-  @UseGuards(jwtAuthGuard,RolesGuard)
-  @Roles(UserRole.ADMIN)
+  @UseGuards(jwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({description:"exam is updated"})
   @Patch(':id')
@@ -55,8 +45,7 @@ export class ExamsController {
   }
 
   
-  @UseGuards(jwtAuthGuard,RolesGuard)
-  @Roles(UserRole.ADMIN)
+  @UseGuards(jwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({description:"exam is deleted"})
   @Delete(':id')
