@@ -1,9 +1,9 @@
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { jwtSecret } from './utils/constants';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class jwtStrategy extends PassportStrategy(Strategy) {
