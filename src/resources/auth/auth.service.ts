@@ -60,7 +60,7 @@ export class AuthService {
   
     res.cookie("Token",token)
 
-    return res.send({ message : "logged in successfully" })
+    return res.send({ message : `logged in successfully ,access_token: Bearer ${token}`})
   }
 
 
