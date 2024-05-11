@@ -9,6 +9,7 @@ export class signinDto {
     @ApiProperty()
     public email: string;
 
+    @ApiProperty()
     @IsNotEmpty()
     @IsString()
     @Length(3, 20, { message: "pass must be between 3 to 20 char" })

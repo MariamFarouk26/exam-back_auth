@@ -74,16 +74,10 @@ model Faq {
   updatedAt DateTime @updatedAt
 }
 
-// Define the enum for roles
- enum UserRole {
-  ADMIN
-  USER
-}
 
 model  User { 
   id  String   @unique @default(uuid())
   hashPass  String 
   email     String  @unique
-  role      UserRole 
   userName  String
 }
