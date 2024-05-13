@@ -8,41 +8,45 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nest
 @Controller('faq')
 @ApiTags('faq')
 export class FaqController {
-  constructor(private readonly faqService: FaqService) {}
+  constructor(private readonly faqService: FaqService) { }
 
 
-  @ApiCreatedResponse({description:"a new FAQ is added"})
+  @UseGuards(jwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ description: "a new FAQ is added" })
   @Post()
   create(@Body() createFaqDto: CreateFaqDto) {
+
     return this.faqService.create(createFaqDto);
   }
 
 
-  @UseGuards(jwtAuthGuard)
-  @ApiOkResponse({description:"get all FAQ ",isArray: true})
-  @ApiBearerAuth()
+  @ApiOkResponse({ description: "get all FAQ ", isArray: true })
   @Get()
   findAll() {
     return this.faqService.findAll();
   }
 
-  @UseGuards(jwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOkResponse({description:"get spacific FAQ by id "})
+
+  @ApiOkResponse({ description: "get spacific FAQ by id " })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.faqService.findOne(+id);
   }
 
 
-  @ApiCreatedResponse({description:"FAQ is updated"})
+  @UseGuards(jwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ description: "FAQ is updated" })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFaqDto: UpdateFaqDto) {
     return this.faqService.update(+id, updateFaqDto);
   }
 
 
-  @ApiOkResponse({description:"FAQ is deleted"})
+  @UseGuards(jwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: "FAQ is deleted" })
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.faqService.remove(+id);
