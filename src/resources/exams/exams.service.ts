@@ -86,38 +86,38 @@ export class ExamsService {
   }
 
   update(id: number, updateExamDto: UpdateExamDto) {
-    // return this.prisma.exam.update({
-    //   where: { id },
-    //   data: {
-    //     duration: updateExamDto.duration,
-    //     title: updateExamDto.title,
-    //     questions: {
-    //       update: updateExamDto.questions.map(question => ({
-    //         where: { id: question.id },
-    //         data: {
-    //           title: question.title,
-    //           audioUrl: question.audioUrl,
-    //           answers: {
-    //             update: question.answers.map(answer => ({
-    //               where: { id: answer.id },
-    //               data: {
-    //                 answerText: answer.answerText,
-    //                 isCorrect: answer.isCorrect
-    //               }
-    //             }))
-    //           }
-    //         }
-    //       }))
-    //     }
-    //   }
-    // })
+    return this.prisma.exam.update({
+      where: { id },
+      data: {
+        duration: updateExamDto.duration,
+        title: updateExamDto.title,
+        questions: {
+          update: updateExamDto.questions.map(question => ({
+            where: { id: question.id },
+            data: {
+              title: question.title,
+              audioUrl: question.audioUrl,
+              answers: {
+                update: question.answers.map(answer => ({
+                  where: { id: answer.id },
+                  data: {
+                    answerText: answer.answerText,
+                    isCorrect: answer.isCorrect
+                  }
+                }))
+              }
+            }
+          }))
+        }
+      }
+    })
     return 'this method is not implemented'
   }
 
-  
+
   async remove(id: number) {
     // return this.prisma.exam.delete({ where: { id } })
-    let deletedProduct =  await this.prisma.exam.delete({ where: { id } });
-    return {message : "deleted Successfully",data : deletedProduct}
+    let deletedProduct = await this.prisma.exam.delete({ where: { id } });
+    return { message: "deleted Successfully", data: deletedProduct }
   }
 }
