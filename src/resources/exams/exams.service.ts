@@ -86,37 +86,52 @@ export class ExamsService {
   }
 
   update(id: number, updateExamDto: UpdateExamDto) {
+
     return this.prisma.exam.update({
       where: { id },
       data: {
         duration: updateExamDto.duration,
         title: updateExamDto.title,
         questions: {
-          update: updateExamDto.questions.map(question => ({
-            where: { id: question.id },
-            data: {
+          upsert: updateExamDto.questions.map(question => ({
+            where: { id: question.id ? question.id : 0 },
+            update: {
               title: question.title,
               audioUrl: question.audioUrl,
               answers: {
-                update: question.answers.map(answer => ({
-                  where: { id: answer.id },
-                  data: {
+                upsert: question.answers.map(answer => ({
+                  where: { id: answer.id ? answer.id : 0 },
+                  update: {
+
+                    answerText: answer.answerText,
+                    isCorrect: answer.isCorrect
+                  },
+                  create: {
                     answerText: answer.answerText,
                     isCorrect: answer.isCorrect
                   }
+                }))
+              }
+            },
+            create: {
+              title: question.title,
+              audioUrl: question.audioUrl,
+              answers: {
+                create: question.answers.map(answer => ({
+                  answerText: answer.answerText,
+                  isCorrect: answer.isCorrect
                 }))
               }
             }
           }))
         }
       }
-    })
-    return 'this method is not implemented'
+    });
+
   }
 
 
   async remove(id: number) {
-    // return this.prisma.exam.delete({ where: { id } })
     let deletedProduct = await this.prisma.exam.delete({ where: { id } });
     return { message: "deleted Successfully", data: deletedProduct }
   }
